@@ -1699,6 +1699,14 @@
     picocolors "^1.0.0"
     tslib "^2.5.0"
 
+"@prismicio/client@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@prismicio/client/-/client-7.0.0.tgz#04897bacb8521b8464d1d1e4eb7ca6bfa9b876cc"
+  integrity sha512-T/V2F3zaFvWYt+ITd/casc2F7qik5xuxTABE0NTcGJqsxeX8l/ivv0N9qiY3dsxFrh7qYMlC7gytdUeclmuA+Q==
+  dependencies:
+    "@prismicio/richtext" "^2.1.4"
+    imgix-url-builder "^0.0.3"
+
 "@prismicio/react@^2.6.1":
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/@prismicio/react/-/react-2.6.1.tgz#8efc80b0016b2e68ab05cd399c05a2ceb5e2065a"
@@ -4350,6 +4358,11 @@ ignore@^5.1.1, ignore@^5.2.0:
   version "5.2.4"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.2.4.tgz#a291c0c6178ff1b960befe47fcdec301674a6324"
   integrity sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==
+
+imgix-url-builder@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/imgix-url-builder/-/imgix-url-builder-0.0.3.tgz#9f386de64cdd1363d352a7f6313fd7dacd8fb282"
+  integrity sha512-8Oc2Cn4+jF06sEfJcVPlWYfD2F6RjrwIMbk1xEzux8unoB5LsvFc/GL1BQ47HPaeE12ReX2nMUcjUslGYWLxHA==
 
 import-fresh@^3.0.0, import-fresh@^3.2.1:
   version "3.3.0"
