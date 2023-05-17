@@ -56,7 +56,7 @@ export async function getPosts({ context }: LoaderArgs) {
   const PRISMIC_API_URL = context.PRISMIC_API_URL as string
 
   const REF = await getRef(PRISMIC_API_URL)
-  const url = `${PRISMIC_API_URL}/documents/search?ref=${REF}&q=%5B%5Bat(document.type%2C"posts")%5D%5D`
+  const url = encodeURI(`${PRISMIC_API_URL}/documents/search?ref=${REF}&q=[[at(document.type,"posts")]]`)
   const response = await fetch(url)
   const data = await response.json<Data>()
 
