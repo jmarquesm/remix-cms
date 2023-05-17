@@ -10,13 +10,13 @@ export function Post({ post }: Props) {
     <div key={post.slug}>
       <h2>{post.title}</h2>
 
-      <img src={post.image.url} alt={post.image.fileName} />
+      <img src={post.image.asset.url} alt={post.image.alt} />
 
-      <RichText content={post.body.json} />
+      <RichText references={post.body.references} content={post.body.json} />
 
       <ul>
-        {post.tag.map((tag: string) => (
-          <li key={tag}>{tag}</li>
+        {post.categories.map((category) => (
+          <li key={category.name}>{category.name}</li>
         ))}
       </ul>
 

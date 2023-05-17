@@ -1,3 +1,4 @@
+import type { RichTextContent, EmbedReferences } from '@graphcms/rich-text-types'
 import type { LoaderArgs } from '@remix-run/cloudflare'
 
 export interface PostHygraph {
@@ -5,17 +6,25 @@ export interface PostHygraph {
   title: string
   slug: string
   image: {
-    id: string
-    url: string
-    width: number
-    height: number
-    fileName: string
+    asset: {
+      id: string
+      url: string
+      width: number
+      height: number
+    }
+    alt: string
   }
   body: {
-    json?: any
+    json: RichTextContent
+    references: EmbedReferences
   }
   date: string
-  tag: string[]
+  categories: {
+    name: string
+    color: {
+      hex: string
+    }
+  }[]
 }
 
 export interface DataProps {
@@ -38,17 +47,31 @@ export async function getPosts({ context }: LoaderArgs): Promise<PostProps> {
         title
         slug
         image {
-          id
-          url
-          width
-          height
-          fileName
+          asset {
+            id
+            url
+            width
+            height
+          }
+          alt
         }
-        body: description {
+        body {
           json
+          references {
+            ... on Asset {
+              id
+              url
+              mimeType
+            }
+          }
         }
         date
-        tag
+        categories {
+          name
+          color {
+            hex
+          }
+        }
       }
     }
   `
