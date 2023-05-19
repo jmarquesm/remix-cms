@@ -13,6 +13,13 @@ export async function loader(args: LoaderArgs) {
 
   const post = await getPost(slug, args)
 
+  if (!post) {
+    throw new Response(null, {
+      status: 404,
+      statusText: 'Not Found',
+    })
+  }
+
   return json({ post })
 }
 
@@ -22,7 +29,7 @@ export default function Index() {
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.4' }}>
       <h1>Remix Contentful</h1>
-      <Post post={post[0]}></Post>
+      <Post post={post}></Post>
     </div>
   )
 }
