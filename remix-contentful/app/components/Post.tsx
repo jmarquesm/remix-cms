@@ -1,7 +1,8 @@
+import type { Options } from '@contentful/rich-text-react-renderer'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
-import { INLINES } from '@contentful/rich-text-types'
-import { useEffect, useState } from 'react'
-import type { Post as ContentfulPost } from '~/lib/contentful'
+import { BLOCKS } from '@contentful/rich-text-types'
+import type { Post as ContentfulPost } from '~/lib/types'
+import type { Body as PostBodyProps } from '~/types/post-types'
 
 interface PostProps {
   post: ContentfulPost
@@ -17,40 +18,26 @@ export function Post({ post }: PostProps) {
       <PostBody body={post.body}></PostBody>
 
       <ul>
-        {post.tags.map((tag: any) => (
-          <li key={tag}>{tag}</li>
+        {post.categories.items.map((category) => (
+          <li key={category.slug}>{category.name}</li>
         ))}
       </ul>
 
-      <div>{post.date}</div>
+      <div>{new Date(post.date).toLocaleDateString()}</div>
     </div>
   )
 }
 
-function PostBody({ body }: any) {
-  const [options, setOptions] = useState({})
+function PostBody({ body }: PostBodyProps) {
+  const options: Options = {
+    renderNode: {
+      [BLOCKS.EMBEDDED_ASSET]: (node) => {
+        const asset = body.links.assets.block.find((asset) => asset.sys.id === node.data.target.sys.id)!
 
-  useEffect(() => {
-    setOptions({
-      renderNode: {
-        [INLINES.HYPERLINK]: (node: any) => {
-          if (node.data.uri.includes('youtube.com/embed')) {
-            return (
-              <div>
-                <iframe
-                  title={node.content[0].value}
-                  src={node.data.uri}
-                  allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
-                  frameBorder="0"
-                  allowFullScreen
-                />
-              </div>
-            )
-          }
-        },
+        return <img src={asset.url} alt={asset.description}></img>
       },
-    })
-  }, [])
+    },
+  }
 
-  return <div>{documentToReactComponents(body, options)}</div>
+  return <div>{documentToReactComponents(body.json, options)}</div>
 }
