@@ -17,21 +17,32 @@ export async function contentfulGraphQLRequest<T>(
   })
 
   const data = await response.json<T>()
+
   return data
 }
 
-export const getPostBySlug = /* GraphQL */ `
+const PostFragment = `
+  title
+  slug
+  image {
+    title
+    alt: description
+    url
+  }
+  date
+  categories: categoriesCollection {
+    items {
+      name
+      slug
+    }
+  }
+`
+
+export const getPostBySlugQuery = /* GraphQL */ `
   query getPostBySlug($slug: String!) {
     postCollection(where: { slug: $slug }, limit: 1) {
       items {
-        title
-        slug
-        image {
-          title
-          alt: description
-          url
-        }
-        date
+        ${PostFragment}
         body {
           json
           links {
@@ -47,12 +58,6 @@ export const getPostBySlug = /* GraphQL */ `
             }
           }
         }
-        categories: categoriesCollection {
-          items {
-            name
-            slug
-          }
-        }
       }
     }
   }
@@ -62,23 +67,38 @@ export const getAllPostsQuery = /* GraphQL */ `
   query getPosts {
     postCollection(limit: 50) {
       items {
-        sys {
-          id
-        }
-        title
+        ${PostFragment}
+      }
+    }
+  }
+`
+
+export const getCategoryPostsQuery = /* GraphQL */ `
+  query getCategoryPosts($slug: String!) {
+    postCollection(where: { categories: { slug: $slug } }) {
+      items {
+        ${PostFragment}
+      }
+    }
+  }
+`
+
+export const getCategoryBySlugQuery = /* GraphQL */ `
+  query getCategoryBySlug($slug: String!) {
+    categoryCollection(where: { slug: $slug }) {
+      items {
+        name
         slug
-        image {
-          title
-          alt: description
-          url
-        }
-        date
-        categories: categoriesCollection {
-          items {
-            name
-            slug
-          }
-        }
+      }
+    }
+  }
+`
+export const getCategoriesQuery = /* GraphQL */ `
+  query getCategories {
+    categoryCollection {
+      items {
+        name
+        slug
       }
     }
   }

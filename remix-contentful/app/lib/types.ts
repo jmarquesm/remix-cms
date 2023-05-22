@@ -1,21 +1,8 @@
 import type { Document } from '@contentful/rich-text-types'
 
-export interface Post {
+export interface ContentfulBasePost {
   title: string
   slug: string
-  body: {
-    json: Document
-    links: {
-      assets: {
-        block: {
-          sys: { id: string }
-          title: string
-          url: string
-          description: string
-        }[]
-      }
-    }
-  }
   date: string
   image: {
     title: string
@@ -30,10 +17,39 @@ export interface Post {
   }
 }
 
-export interface ContentfulPostsOutput {
+export interface ContentfulPost extends ContentfulBasePost {
+  body: {
+    json: Document
+    links: {
+      assets: {
+        block: {
+          sys: { id: string }
+          title: string
+          url: string
+          description: string
+        }[]
+      }
+    }
+  }
+}
+
+export interface ContentfulPostsOutput<TPost extends ContentfulBasePost | ContentfulPost> {
   data: {
     postCollection: {
-      items: Post[]
+      items: TPost[]
+    }
+  }
+}
+
+export interface Category {
+  name: string
+  slug: string
+}
+
+export interface ContentfulCategoryOutput {
+  data: {
+    categoryCollection: {
+      items: Category[]
     }
   }
 }

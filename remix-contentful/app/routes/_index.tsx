@@ -1,7 +1,7 @@
 import type { LoaderArgs, V2_MetaFunction } from '@remix-run/cloudflare'
 import { json } from '@remix-run/cloudflare'
-import { useLoaderData } from '@remix-run/react'
-import { getPosts } from '~/lib/contentful'
+import { Link, useLoaderData } from '@remix-run/react'
+import { getCategories, getPosts } from '~/lib/contentful'
 import PostsCard from '~/components/PostsCard'
 
 export const meta: V2_MetaFunction = () => {
@@ -10,20 +10,33 @@ export const meta: V2_MetaFunction = () => {
 
 export async function loader(args: LoaderArgs) {
   const posts = await getPosts(args)
+  const categories = await getCategories(args)
 
-  return json({ posts })
+  return json({ posts, categories })
 }
 
 export default function Index() {
-  const { posts } = useLoaderData<typeof loader>()
+  const { posts, categories } = useLoaderData<typeof loader>()
 
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.4' }}>
-      <h1>Remix Contentful</h1>
+      <div>
+        <h2>Noticias por Categoria</h2>
 
-      {posts.map((post) => (
-        <PostsCard key={post.slug} post={post} />
-      ))}
+        {categories.map((category) => (
+          <li key={category.slug}>
+            <Link to={`/categoria/${category.slug}`}>{category.name}</Link>
+          </li>
+        ))}
+      </div>
+
+      <div>
+        <h2>Ultimas Noticias</h2>
+
+        {posts.map((post) => (
+          <PostsCard key={post?.slug} post={post} />
+        ))}
+      </div>
     </div>
   )
 }
